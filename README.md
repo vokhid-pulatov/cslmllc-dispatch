@@ -12,9 +12,11 @@ The operations foundation now also includes driver/equipment records, availabili
 
 The installable WordPress/PHP/MySQL edition is in `wordpress-plugin/cslm-dispatch`. It runs on the existing managed WordPress hosting plan without Node.js, PostgreSQL, Docker, or n8n. The administrator dashboard is protected by the normal WordPress login and `manage_options` capability.
 
-Install package: `C:\Users\vpulatov_sticky\projects\cslm-dispatch-0.1.0.zip`
+Install package: `C:\Users\vpulatov_sticky\projects\cslm-dispatch.zip`
 
 This first WordPress release includes carriers, drivers/equipment, loads, invoices, the free-first-load offer, promotional 0.1% fee, standard 5% fee, and CSLM company contact details. Live WordPress activation must be verified after upload before the release is treated as deployed.
+
+Build the package with `powershell -File wordpress-plugin/package.ps1`. The ZIP name intentionally matches the top-level plugin folder so WordPress installs the correct plugin path.
 
 ## Current dashboard
 

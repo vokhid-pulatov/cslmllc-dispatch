@@ -8,6 +8,14 @@ Business configuration: CSLM LLC, Winter Garden, Florida. Contact email: `cslmll
 
 The operations foundation now also includes driver/equipment records, availability, expanded carrier onboarding fields, and draft invoice storage. UI workflows for these modules are the next incremental delivery.
 
+## Cheapest Hostinger deployment
+
+The installable WordPress/PHP/MySQL edition is in `wordpress-plugin/cslm-dispatch`. It runs on the existing managed WordPress hosting plan without Node.js, PostgreSQL, Docker, or n8n. The administrator dashboard is protected by the normal WordPress login and `manage_options` capability.
+
+Install package: `C:\Users\vpulatov_sticky\projects\cslm-dispatch-0.1.0.zip`
+
+This first WordPress release includes carriers, drivers/equipment, loads, invoices, the free-first-load offer, promotional 0.1% fee, standard 5% fee, and CSLM company contact details. Live WordPress activation must be verified after upload before the release is treated as deployed.
+
 ## Current dashboard
 
 ![DispatchFlow dashboard](dispatchflow-dashboard.png)

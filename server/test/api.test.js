@@ -1,2 +1,4 @@
 import test from 'node:test';import assert from 'node:assert/strict';import app from '../src/index.js';
 test('health endpoint',async()=>{const server=app.listen(0);const port=server.address().port;const r=await fetch(`http://127.0.0.1:${port}/api/health`);assert.equal(r.status,200);assert.equal((await r.json()).ok,true);server.close()});
+test('driver requires a name',async()=>{const server=app.listen(0);const port=server.address().port;const r=await fetch(`http://127.0.0.1:${port}/api/drivers`,{method:'POST',headers:{'content-type':'application/json'},body:'{}'});assert.equal(r.status,400);server.close()});
+test('invoice requires an invoice number',async()=>{const server=app.listen(0);const port=server.address().port;const r=await fetch(`http://127.0.0.1:${port}/api/invoices`,{method:'POST',headers:{'content-type':'application/json'},body:'{}'});assert.equal(r.status,400);server.close()});

@@ -16,6 +16,8 @@ Install package: `C:\Users\vpulatov_sticky\projects\cslm-dispatch.zip`
 
 This first WordPress release includes carriers, drivers/equipment, loads, invoices, the free-first-load offer, promotional 0.1% fee, standard 5% fee, and CSLM company contact details. Live WordPress activation must be verified after upload before the release is treated as deployed.
 
+Version 0.2.0 adds a public one-page dispatch-services site, click-to-reveal email, driver/carrier application intake, service-agreement previews, an administrator Applications queue, and a dedicated full-width WordPress page template. The public page intentionally does not display the business phone number.
+
 Build the package with `powershell -File wordpress-plugin/package.ps1`. The ZIP name intentionally matches the top-level plugin folder so WordPress installs the correct plugin path.
 
 ## Current dashboard

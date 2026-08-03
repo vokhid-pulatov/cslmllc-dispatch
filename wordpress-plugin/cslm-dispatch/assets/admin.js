@@ -1,8 +1,8 @@
 (() => {
   const root = document.getElementById('cslm-dispatch-app');
   const cfg = window.CSLMDispatch;
-  const state = { tab: 'loads', carriers: [], drivers: [], loads: [], invoices: [], busy: false };
-  const labels = { loads: 'Loads', carriers: 'Carriers', drivers: 'Drivers', invoices: 'Invoices' };
+  const state = { tab: 'loads', carriers: [], drivers: [], loads: [], invoices: [], applications: [], busy: false };
+  const labels = { loads: 'Loads', carriers: 'Carriers', drivers: 'Drivers', invoices: 'Invoices', applications: 'Applications' };
   const esc = value => String(value ?? '').replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
   const request = async (path, options = {}) => {
     const response = await fetch(cfg.restUrl + path, { ...options, headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': cfg.nonce, ...(options.headers || {}) } });
@@ -12,7 +12,7 @@
   };
   async function refresh() {
     state.busy = true; render();
-    try { [state.carriers, state.drivers, state.loads, state.invoices] = await Promise.all(Object.keys(labels).slice(1,3).concat(['loads','invoices']).map(x => request(x))); }
+    try { [state.carriers, state.drivers, state.loads, state.invoices, state.applications] = await Promise.all(['carriers','drivers','loads','invoices','applications'].map(x => request(x))); }
     catch (error) { notice(error.message, true); }
     state.busy = false; render();
   }
@@ -20,7 +20,7 @@
   function render() {
     const active = state.loads.filter(x => !['delivered','cancelled'].includes(x.status)).length;
     const earned = state.invoices.filter(x => x.status === 'paid').reduce((sum,x) => sum + Number(x.amount), 0);
-    root.innerHTML = `<div class="cslm-shell"><aside><div class="cslm-brand">🚚 <b>CSLM Dispatch</b></div>${Object.entries(labels).map(([id,label]) => `<button data-tab="${id}" class="${state.tab===id?'active':''}">${label}</button>`).join('')}<small>${esc(cfg.settings.company_name)}<br>${esc(cfg.settings.phone)}<br>${esc(cfg.settings.email)}</small></aside><main><header><div><p>CSLM LLC · FLORIDA OPERATIONS</p><h1>${labels[state.tab]}</h1></div><button class="primary" data-add="${state.tab}">+ Add ${labels[state.tab].slice(0,-1)}</button></header><div class="offer"><b>Introductory pricing:</b> first completed load free, then ${esc(cfg.settings.promotional_fee)}% temporarily; standard fee ${esc(cfg.settings.standard_fee)}%.</div><section class="metrics"><article><span>Active loads</span><strong>${active}</strong></article><article><span>Carriers</span><strong>${state.carriers.length}</strong></article><article><span>Paid fees</span><strong>${money(earned)}</strong></article></section><section class="panel">${state.busy?'<p>Loading…</p>':table()}</section></main></div>`;
+    root.innerHTML = `<div class="cslm-shell"><aside><div class="cslm-brand">🚚 <b>CSLM Dispatch</b></div>${Object.entries(labels).map(([id,label]) => `<button data-tab="${id}" class="${state.tab===id?'active':''}">${label}${id==='applications'&&state.applications.length?` (${state.applications.length})`:''}</button>`).join('')}<small>${esc(cfg.settings.company_name)}<br>${esc(cfg.settings.phone)}<br>${esc(cfg.settings.email)}</small></aside><main><header><div><p>CSLM LLC · FLORIDA OPERATIONS</p><h1>${labels[state.tab]}</h1></div>${state.tab==='applications'?'':`<button class="primary" data-add="${state.tab}">+ Add ${labels[state.tab].slice(0,-1)}</button>`}</header><div class="offer"><b>Introductory pricing:</b> first completed load free, then ${esc(cfg.settings.promotional_fee)}% temporarily; standard fee ${esc(cfg.settings.standard_fee)}%.</div><section class="metrics"><article><span>Active loads</span><strong>${active}</strong></article><article><span>Carriers</span><strong>${state.carriers.length}</strong></article><article><span>New applications</span><strong>${state.applications.filter(x=>x.status==='new').length}</strong></article></section><section class="panel">${state.busy?'<p>Loading…</p>':table()}</section></main></div>`;
   }
   function table() {
     const rows = state[state.tab];
@@ -30,8 +30,9 @@
       carriers: x => [x.company_name, x.contact_name, x.mc_number || '—', x.equipment, x.first_load_free==='1'?'Free first load':'Standard', x.status],
       drivers: x => [x.name, x.phone, x.equipment_type, x.equipment_number || '—', x.current_location || '—', x.status],
       invoices: x => [x.invoice_number, money(x.amount), x.due_at || '—', x.status],
+      applications: x => [x.contact_name, x.company_name || '—', x.phone, x.email, x.equipment, x.mc_number || '—', x.status],
     };
-    const heads = {loads:['Load','Route','Broker','Gross','Fee','Status'],carriers:['Company','Contact','MC','Equipment','Offer','Status'],drivers:['Driver','Phone','Equipment','Unit','Location','Status'],invoices:['Invoice','Amount','Due','Status']}[state.tab];
+    const heads = {loads:['Load','Route','Broker','Gross','Fee','Status'],carriers:['Company','Contact','MC','Equipment','Offer','Status'],drivers:['Driver','Phone','Equipment','Unit','Location','Status'],invoices:['Invoice','Amount','Due','Status'],applications:['Contact','Company','Phone','Email','Equipment','MC','Status']}[state.tab];
     return `<table><thead><tr>${heads.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(x=>`<tr>${cells[state.tab](x).map((c,i)=>`<td>${i===0?'<b>'+esc(c)+'</b>':esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
   }
   function modal(resource) {

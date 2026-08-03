@@ -1,0 +1,1 @@
+{"name":"dispatch-api","type":"module","scripts":{"dev":"node --watch src/index.js","start":"node src/index.js","test":"node --test"},"dependencies":{"cors":"latest","dispatch-mvp":"file:..","dotenv":"latest","express":"latest","multer":"latest","openai":"latest","pg":"latest","twilio":"latest"}}

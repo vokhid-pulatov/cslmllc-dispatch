@@ -1,0 +1,4 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE TABLE IF NOT EXISTS carriers (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), company_name text NOT NULL, contact_name text NOT NULL DEFAULT '', phone text NOT NULL DEFAULT '', email text NOT NULL DEFAULT '', mc_number text NOT NULL DEFAULT '', equipment text NOT NULL DEFAULT 'Dry Van', status text NOT NULL DEFAULT 'prospect', created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE IF NOT EXISTS loads (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), carrier_id uuid REFERENCES carriers(id) ON DELETE SET NULL, load_number text NOT NULL, broker text NOT NULL DEFAULT '', origin text NOT NULL, destination text NOT NULL, pickup_at timestamptz, delivery_at timestamptz, gross_pay numeric(12,2) NOT NULL DEFAULT 0, fee_percent numeric(5,2) NOT NULL DEFAULT 0, status text NOT NULL DEFAULT 'planned', created_at timestamptz NOT NULL DEFAULT now());
+CREATE INDEX IF NOT EXISTS loads_status_idx ON loads(status);

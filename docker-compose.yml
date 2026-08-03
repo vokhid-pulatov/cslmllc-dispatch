@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: dispatch
+      POSTGRES_USER: dispatch
+      POSTGRES_PASSWORD: dispatch
+    ports: ["5432:5432"]
+    volumes: ["dispatch_pg:/var/lib/postgresql/data", "./server/sql:/docker-entrypoint-initdb.d"]
+  n8n:
+    image: n8nio/n8n:latest
+    ports: ["5678:5678"]
+    environment:
+      N8N_SECURE_COOKIE: "false"
+      WEBHOOK_URL: http://localhost:5678/
+    volumes: ["n8n_data:/home/node/.n8n"]
+volumes:
+  dispatch_pg:
+  n8n_data:

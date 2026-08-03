@@ -1,0 +1,1 @@
+{"name":"dispatch-web","private":true,"type":"module","scripts":{"dev":"vite","build":"vite build"},"dependencies":{"@vitejs/plugin-react":"latest","dispatch-mvp":"file:..","lucide-react":"latest","react":"latest","react-dom":"latest","vite":"latest"}}

@@ -4,6 +4,10 @@ Lean dispatch-company operations platform: carriers, loads, dispatch-fee trackin
 
 Planned public domain: `cslmllc.com`. The current application is a separate React/Node service and should be deployed behind a subdomain or integrated with WordPress through a small plugin/API layer rather than copied directly into a WordPress theme.
 
+## Current dashboard
+
+![DispatchFlow dashboard](dispatchflow-dashboard.png)
+
 ## Start without external services
 
 ```powershell

@@ -4,6 +4,8 @@ Lean dispatch-company operations platform: carriers, loads, dispatch-fee trackin
 
 Planned public domain: `cslmllc.com`. The current application is a separate React/Node service and should be deployed behind a subdomain or integrated with WordPress through a small plugin/API layer rather than copied directly into a WordPress theme.
 
+Business configuration: CSLM LLC, Winter Garden, Florida. Introductory pricing is one free completed load, then a temporary 0.1% dispatch fee; the standard fee is 5%.
+
 ## Current dashboard
 
 ![DispatchFlow dashboard](dispatchflow-dashboard.png)
